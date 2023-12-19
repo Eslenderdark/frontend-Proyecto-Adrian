@@ -10,20 +10,14 @@ export class CatalogoPage implements OnInit {
 
   constructor(private http: HttpClient) { }
 
+  public cortes : any;
 
   ngOnInit() {
 
-    this.http.get('http://localhost:3000/cortes').subscribe((response) => {
+    this.http.get('http://localhost:3000/cortes').subscribe((response:any) => {
       console.log(response);
-    });
+    this.cortes = response;
 
-  }
-
-  showapi() {
-
-
-    this.http.get('http://localhost:3000/cortes').subscribe((response) => {
-      console.log(response);
     });
 
   }
