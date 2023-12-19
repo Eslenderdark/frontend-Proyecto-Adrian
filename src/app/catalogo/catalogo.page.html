@@ -2,20 +2,24 @@
 
   <ion-grid>
     <ion-row>
-    <ion-col size='6' *ngFor="let corte of cortes;let i = index">
-      <ion-card>
-        <img src='/assets/icon/{{corte.foto}}' />
-        <ion-card-header>
-          <ion-card-title></ion-card-title>
-        </ion-card-header>
-        <ion-card-title> {{corte.name}}</ion-card-title>
+      <ion-col size='6' *ngFor="let corte of cortes;let i = index">
+        <ion-card (click)="mostrarinfo(corte)">
+          <img src='/assets/icon/{{corte.foto}}' />
 
-      </ion-card>
-     
+          <ion-card><br>
+
+            <ion-card-title>
+              {{corte.name}} <br> {{corte.precio}}€
+            </ion-card-title>
+  
+          </ion-card>
+
+        </ion-card>
 
 
-    </ion-col>
-  </ion-row>
+
+      </ion-col>
+    </ion-row>
   </ion-grid>
 
 
