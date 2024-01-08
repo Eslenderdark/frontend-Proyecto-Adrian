@@ -1,0 +1,33 @@
+
+.CelcaCalendario {
+    border: 1px solid black;  /* Añade un borde negro a las celdas del calendario */
+    height: 50px;  /* Altura deseada para cada celda */
+  }
+  
+  .CeldaHoras {
+    border: 1px solid black;  /* Añade un borde negro a las celdas de días y horas */
+    height: 50px;  /* Altura deseada para las celdas de días y horas */
+  }
+  
+  .CeldaDias {
+
+    border: 1px solid black;  /* Añade un borde negro a las celdas de días y horas */
+  }
+
+  /* Añadimos margen para centrar los días con las celdas (sin tener en cuenta la primera celda de horas) */
+  .CeldaDias ion-col:not(.CeldaVacia) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .CeldaVacia {
+    border: none;
+    height: 50px;
+  }
+  
+  .CeldaCalendario {
+
+    border: 1px solid black;  /* Añade un borde negro a las celdas de días y horas */
+
+  }

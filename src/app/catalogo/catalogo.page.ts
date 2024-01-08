@@ -29,8 +29,7 @@ export class CatalogoPage implements OnInit {
       header: corte.name,
       subHeader: corte.precio + "€",
       message: `Tipo de peinado/corte es: ${corte.tipo_de_pelo}
-       Tiempo estimado en hacer el peinado/corte es de: ${corte.tiempo_estimado} minutos
-       Precio: ${corte.precio}`,
+       Tiempo estimado en hacer el peinado/corte es de: ${corte.tiempo_estimado} minutos`,
       buttons: ['Cerrar']
     });
     await alert.present();
