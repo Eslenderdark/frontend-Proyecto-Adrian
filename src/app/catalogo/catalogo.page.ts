@@ -21,10 +21,6 @@ export class CatalogoPage implements OnInit {
       this.cortes = response;
 
     });
-
-    this.router.navigate(['/calendario']);
-
-
   }
 
   async mostrarInfo(corte: any) {
@@ -44,6 +40,8 @@ export class CatalogoPage implements OnInit {
         {
           text: 'Seleccionar día',
           handler: () => {
+
+            this.router.navigate(['/calendario']);
             this.irACalendario();
           },
         },
@@ -52,7 +50,9 @@ export class CatalogoPage implements OnInit {
     await alert.present();
   }
 
+  
   irACalendario() {
     this.router.navigate(['/calendario']);
   }
+
 }
