@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-calendario',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CalendarioPage implements OnInit {
 
-  constructor() { }
+  constructor(private alertController: AlertController) { }
 
   ngOnInit() {
   }
@@ -21,7 +23,32 @@ export class CalendarioPage implements OnInit {
     console.log(`Selected: ${day}, ${hour}`);
   }
 
-
-
+  async seleccionarDia(hora: string, dia: string) {
+    const alert = await this.alertController.create({
+      header: 'Ingrese su nombre',
+      inputs: [
+        {
+          name: 'nombre',
+          type: 'text',
+          placeholder: 'Nombre',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancelado');
+          },
+        },
+        {
+          text: 'Aceptar',
+          handler: (data) => {
+            console.log(`Nombre seleccionado: ${data.nombre}`);
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
 }
-

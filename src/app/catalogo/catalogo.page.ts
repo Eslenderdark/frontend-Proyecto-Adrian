@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-catalogo',
@@ -9,7 +10,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class CatalogoPage implements OnInit {
 
-  constructor(private http: HttpClient, private alertController: AlertController) { }
+  constructor(private http: HttpClient, private alertController: AlertController, private router: Router) { }
 
   public cortes: any;
 
@@ -21,17 +22,37 @@ export class CatalogoPage implements OnInit {
 
     });
 
+    this.router.navigate(['/calendario']);
+
+
   }
 
-  async mostrarinfo(corte: any) {
+  async mostrarInfo(corte: any) {
     const alert = await this.alertController.create({
-
       header: corte.name,
       subHeader: corte.precio + "€",
       message: `Tipo de peinado/corte es: ${corte.tipo_de_pelo}
        Tiempo estimado en hacer el peinado/corte es de: ${corte.tiempo_estimado} minutos`,
-      buttons: ['Cerrar']
+      buttons: [
+        {
+          text: 'Cerrar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancelado');
+          },
+        },
+        {
+          text: 'Seleccionar día',
+          handler: () => {
+            this.irACalendario();
+          },
+        },
+      ],
     });
     await alert.present();
+  }
+
+  irACalendario() {
+    this.router.navigate(['/calendario']);
   }
 }
