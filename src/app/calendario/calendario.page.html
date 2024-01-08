@@ -6,15 +6,14 @@
 
 <ion-content>
   <ion-grid>
-    <!-- Encabezado del calendario: Días de la semana -->
+    <!-- Días de la semana -->
     <ion-row class="CeldaDias">
-      <!-- Añadimos una celda vacía para compensar la primera columna de horas -->
+      <!-- Celda vacia -->
       <ion-col class="CeldaVacia"></ion-col>
-      <!-- Iteramos sobre los días de la semana -->
       <ion-col *ngFor="let dias of DiaSemana" class="CentrarContenido" text-center>{{ dias }}</ion-col>
     </ion-row>
 
-    <!-- Contenido del calendario: Horas y celdas -->
+    <!-- Horas y celdas -->
     <ion-row *ngFor="let Horas of Horas">
       <!-- Columna de horas -->
       <ion-col class="CeldaHoras" text-center>{{ Horas }}</ion-col>
