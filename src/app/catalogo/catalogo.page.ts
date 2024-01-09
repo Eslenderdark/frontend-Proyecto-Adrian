@@ -49,15 +49,10 @@ export class CatalogoPage implements OnInit {
 
             this.router.navigate(['/calendario']);
 
-
           },
         },
       ],
     });
     await alert.present();
   }
-
-
-
-
 }
