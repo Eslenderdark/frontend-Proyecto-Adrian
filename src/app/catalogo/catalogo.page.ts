@@ -23,12 +23,17 @@ export class CatalogoPage implements OnInit {
     });
   }
 
+  //Muestra información del corte al hacer click en la tarjeta
   async mostrarInfo(corte: any) {
     const alert = await this.alertController.create({
       header: corte.name,
       subHeader: corte.precio + "€",
       message: `Tipo de peinado/corte es: ${corte.tipo_de_pelo}
        Tiempo estimado en hacer el peinado/corte es de: ${corte.tiempo_estimado} minutos`,
+
+      //Al hacerl click aparte de la info sale 2 botones
+
+      //Cierra el alert
       buttons: [
         {
           text: 'Cerrar',
@@ -37,12 +42,14 @@ export class CatalogoPage implements OnInit {
             console.log('Cancelado');
           },
         },
+        //Este te manda a la pagina de "Calendario"
         {
           text: 'Seleccionar día',
           handler: () => {
 
             this.router.navigate(['/calendario']);
-            this.irACalendario();
+
+
           },
         },
       ],
@@ -50,9 +57,7 @@ export class CatalogoPage implements OnInit {
     await alert.present();
   }
 
-  
-  irACalendario() {
-    this.router.navigate(['/calendario']);
-  }
+
+
 
 }

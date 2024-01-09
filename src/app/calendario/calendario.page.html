@@ -19,7 +19,7 @@
       <ion-col class="CeldaHoras" text-center>{{ Horas }}</ion-col>
 
       <!-- Celdas del calendario -->
-      <ion-col *ngFor="let dias of DiaSemana" (click)="selectDay(Horas, dias)" class="CeldaCalendario">
+      <ion-col *ngFor="let dias of DiaSemana" (click)="seleccionarDia(Horas, dias)" class="CeldaCalendario">
       </ion-col>
     </ion-row>
   </ion-grid>
