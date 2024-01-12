@@ -47,7 +47,7 @@ export class CatalogoPage implements OnInit {
           text: 'Seleccionar día',
           handler: () => {
 
-            this.router.navigate(['/calendario']);
+            this.router.navigate(['/calendario',{corte_seleccionado : JSON.stringify(corte)}]);
 
           },
         },

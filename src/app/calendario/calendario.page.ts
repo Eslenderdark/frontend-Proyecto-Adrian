@@ -14,8 +14,12 @@ export class CalendarioPage implements OnInit {
   public mensaje: any;
 
   ngOnInit() {
-    //Al entrar a la pagina sale la alerta
-    this.mostrarAlerta('Ponga su nombre y seleccione un dia');
+
+    let corte = JSON.parse( this.activatedRoute.snapshot.paramMap.get('corte_seleccionado') as string);
+    console.log(corte)
+    if (corte != null){
+      this.mostrarAlerta('Ponga su nombre y seleccione un dia');
+    }
 
   }
   //Esto es el calendario, Dias y Horas
