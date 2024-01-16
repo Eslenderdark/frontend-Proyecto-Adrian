@@ -12,12 +12,18 @@ export class CalendarioPage implements OnInit {
   constructor(private alertController: AlertController, private activatedRoute: ActivatedRoute) { }
 
   public mensaje: any;
+  public corte_seleccionado: any;
+  public nombreUsuario: any;
+  public calendario: any;
+  public corte: any;
+  public celda: any;
+  
 
   ngOnInit() {
 
-    let corte = JSON.parse( this.activatedRoute.snapshot.paramMap.get('corte_seleccionado') as string);
-    console.log(corte)
-    if (corte != null){
+    this.corte = JSON.parse(this.activatedRoute.snapshot.paramMap.get('corte_seleccionado') as string);
+    console.log(this.corte)
+    if (this.corte != null) {
       this.mostrarAlerta('Ponga su nombre y seleccione un dia');
     }
 
@@ -38,7 +44,7 @@ export class CalendarioPage implements OnInit {
       header: mensaje,
       buttons: [{
         text: 'OK',
-        handler: (nombreUsuario) => { 
+        handler: (nombreUsuario) => {
           console.log(nombreUsuario);
         }
       }],
@@ -48,4 +54,19 @@ export class CalendarioPage implements OnInit {
     //Muestra la alerta en la pagina
     await alert.present();
   }
+
+  clickCeldaCalendario(hora: string, dia: string,i: number, j: number) {
+
+    console.log("Hora " + hora);
+    console.log("dia " + dia);
+    console.log("corte " + JSON.stringify(this.corte));
+
+    if (this.celda) {
+      //this.celda = celda;
+      console.log(`Celda seleccionada: ${dia}, ${hora}`);
+    } else {
+      console.log("Error" + dia + hora + JSON.stringify(this.corte) + " " + i + " " + j);
+    }
+
+}
 }

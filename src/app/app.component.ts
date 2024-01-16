@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -6,10 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public appPages = [
-    { title: 'Catalogo', url: 'catalogo', icon: 'person' },
-    { title: 'Calendario', url: 'calendario', icon: 'person' },
-    { title: 'Información', url: 'info', icon: 'person' }
+    { title: 'Catalogo', url: 'catalogo', icon: 'person', login_hide:true },
+    { title: 'Calendario', url: 'calendario', icon: 'person', login_hide:true },
+    { title: 'Información', url: 'info', icon: 'person', login_hide:true }
   ];
 
-  constructor() {}
+  constructor(public auth: AuthService) {}
 }
