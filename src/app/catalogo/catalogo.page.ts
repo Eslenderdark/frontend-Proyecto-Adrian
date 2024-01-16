@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '@auth0/auth0-angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,16 +11,22 @@ import { Router } from '@angular/router';
 })
 export class CatalogoPage implements OnInit {
 
-  constructor(private http: HttpClient, private alertController: AlertController, private router: Router) { }
+  constructor(public auth: AuthService, private http: HttpClient, private alertController: AlertController, private router: Router) { }
 
   public cortes: any;
+  public user: any;
 
   ngOnInit() {
+
+    // Carga la informacion de usuario desde un auth
+    this.auth.user$.subscribe((data) => {
+      this.user = data
+      console.log(this.user);
+    });
 
     this.http.get('http://localhost:3000/cortes').subscribe((response: any) => {
       console.log(response);
       this.cortes = response;
-
     });
   }
 
@@ -47,7 +54,7 @@ export class CatalogoPage implements OnInit {
           text: 'Seleccionar día',
           handler: () => {
 
-            this.router.navigate(['/calendario',{corte_seleccionado : JSON.stringify(corte)}]);
+            this.router.navigate(['/calendario', { corte_seleccionado: JSON.stringify(corte) }]);
 
           },
         },
