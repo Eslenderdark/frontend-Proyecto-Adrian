@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from '@auth0/auth0-angular';
+import { HttpClient } from '@angular/common/http';
+
 
 
 @Component({
@@ -11,7 +13,7 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class CalendarioPage implements OnInit {
 
-  constructor(private alertController: AlertController, private activatedRoute: ActivatedRoute, public auth: AuthService) { }
+  constructor(private alertController: AlertController, private activatedRoute: ActivatedRoute, public auth: AuthService,private http: HttpClient) { }
 
   public mensaje: any;
   public corte_seleccionado: any;
@@ -22,6 +24,10 @@ export class CalendarioPage implements OnInit {
   public celda: any;
   public user: any;
   public dia: any;
+  public precio: any;
+  public botonActivo: boolean = false;
+  public seleccionRealizada: boolean = false;
+
   //Esto es el calendario, Dias y Horas
   public Mes: Date = new Date();
   public DiaSemana: string[] = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];
@@ -89,29 +95,36 @@ export class CalendarioPage implements OnInit {
   }
 
   clickCeldaCalendario(hora: string, dia: string, i: number, j: number) {
-
+    if (!this.seleccionRealizada) {
     console.log("Hora " + hora);
     console.log("dia " + dia);
     console.log("corte " + JSON.stringify(this.corte));
   // Pendiente por hacer en esta funcion: 1- Enviar la cita al backend / 2- Que solo se pueda eligir 1 dia / 3- Comprobar que el dia y hora no haya cita previa
     
       console.log(`Celda seleccionada: ${dia}, ${hora}`);
-      let cita = {
+      const cita = {
         hora: hora,
         dia: dia,
+        precio: this.corte.precio,
         id_corte: this.corte.id,
         id_cliente: this.user.email,
         col_index: i,
         row_index: j
       };
-
       this.citas[i][j] = this.nombre_usuario + " " + this.corte.name
 
-      console.log(`${dia}, ${hora},${this.corte.id}, ${this.user.email},${i}, ${j}`);
-
-    // } else {
-      // console.log("Error" + dia + hora + JSON.stringify(this.corte) + " " + i + " " + j);
-    // }
-
+      this.http.post('http://localhost:3000/citas', cita).subscribe(
+        (response) => {
+          console.log('Respuesta del backend:', response);
+          this.botonActivo = true;
+          this.seleccionRealizada = true;  // Marcar la selección como realizada
+        },
+        (error) => {
+          console.error('Error al enviar datos al backend:', error);
+        }
+      );
+    } else {
+      alert('Ya has elegido un día. No se permiten selecciones adicionales.');
+    }
   }
 }
