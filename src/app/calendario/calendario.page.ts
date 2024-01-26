@@ -13,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CalendarioPage implements OnInit {
 
-  constructor(private alertController: AlertController, private activatedRoute: ActivatedRoute, public auth: AuthService,private http: HttpClient) { }
+  constructor(private alertController: AlertController, private activatedRoute: ActivatedRoute, public auth: AuthService, private http: HttpClient) { }
 
   public mensaje: any;
   public corte_seleccionado: any;
@@ -63,6 +63,19 @@ export class CalendarioPage implements OnInit {
       console.log(this.user);
     });
 
+    // Recuperar citas y recuperarla
+    this.http.get('http://localhost:3000/citas').subscribe((response: any) => {
+        console.log('Respuesta del backend:', response);
+        response.forEach((cita: any) =>{
+          this.citas[cita.row_index][cita.col_index] = cita.nombre + " " + cita.name;
+        })
+      
+      },
+      (error) => {
+        console.error('Error al enviar datos al backend:', error);
+      }
+    );
+
     this.corte = JSON.parse(this.activatedRoute.snapshot.paramMap.get('corte_seleccionado') as string);
     console.log(this.corte)
     if (this.corte != null) {
@@ -96,11 +109,10 @@ export class CalendarioPage implements OnInit {
 
   clickCeldaCalendario(hora: string, dia: string, i: number, j: number) {
     if (!this.seleccionRealizada) {
-    console.log("Hora " + hora);
-    console.log("dia " + dia);
-    console.log("corte " + JSON.stringify(this.corte));
-  // Pendiente por hacer en esta funcion: 1- Enviar la cita al backend / 2- Que solo se pueda eligir 1 dia / 3- Comprobar que el dia y hora no haya cita previa
-    
+      console.log("Hora " + hora);
+      console.log("dia " + dia);
+      console.log("corte " + JSON.stringify(this.corte));
+
       console.log(`Celda seleccionada: ${dia}, ${hora}`);
       const cita = {
         hora: hora,
@@ -109,7 +121,8 @@ export class CalendarioPage implements OnInit {
         id_corte: this.corte.id,
         id_cliente: this.user.email,
         col_index: i,
-        row_index: j
+        row_index: j,
+        nombre: this.nombre_usuario
       };
       this.citas[i][j] = this.nombre_usuario + " " + this.corte.name
 
@@ -117,7 +130,7 @@ export class CalendarioPage implements OnInit {
         (response) => {
           console.log('Respuesta del backend:', response);
           this.botonActivo = true;
-          this.seleccionRealizada = true;  // Marcar la selección como realizada
+          this.seleccionRealizada = true;
         },
         (error) => {
           console.error('Error al enviar datos al backend:', error);
@@ -126,5 +139,8 @@ export class CalendarioPage implements OnInit {
     } else {
       alert('Ya has elegido un día. No se permiten selecciones adicionales.');
     }
+
+  
   }
+
 }

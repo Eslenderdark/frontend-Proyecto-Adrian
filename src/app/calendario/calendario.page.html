@@ -14,12 +14,12 @@
     </ion-row>
 
     <!-- Horas y celdas -->
-    <ion-row *ngFor="let hora of Horas; let i = index">
+    <ion-row *ngFor="let hora of Horas; let j = index">
       <!-- Columna de horas -->
       <ion-col class="CeldaHoras" text-center>{{ hora }}</ion-col>
 
       <!-- Celdas del calendario -->
-      <ion-col *ngFor="let dia of DiaSemana; let j = index" (click)="clickCeldaCalendario(hora, dia, i, j)" class="CeldaCalendario">
+      <ion-col *ngFor="let dia of DiaSemana; let i = index" (click)="clickCeldaCalendario(hora, dia, i, j)" class="CeldaCalendario">
         {{ citas[i][j] }}
       </ion-col>
     </ion-row>
