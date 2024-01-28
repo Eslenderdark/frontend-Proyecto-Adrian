@@ -120,8 +120,8 @@ export class CalendarioPage implements OnInit {
         precio: this.corte.precio,
         id_corte: this.corte.id,
         id_cliente: this.user.email,
-        col_index: i,
-        row_index: j,
+        col_index: j,
+        row_index: i,
         nombre: this.nombre_usuario
       };
       this.citas[i][j] = this.nombre_usuario + " " + this.corte.name
