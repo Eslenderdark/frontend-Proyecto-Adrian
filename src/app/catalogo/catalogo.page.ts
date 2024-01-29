@@ -30,7 +30,7 @@ export class CatalogoPage implements OnInit {
     });
   }
 
-  //Muestra información del corte al hacer click en la tarjeta
+  // Muestra información del corte al hacer click en la tarjeta
   async mostrarInfo(corte: any) {
     const alert = await this.alertController.create({
       header: corte.name,
@@ -38,9 +38,9 @@ export class CatalogoPage implements OnInit {
       message: `Tipo de peinado/corte es: ${corte.tipo_de_pelo}
        Tiempo estimado en hacer el peinado/corte es de: ${corte.tiempo_estimado} minutos`,
 
-      //Al hacerl click aparte de la info sale 2 botones
+      // Al hacerl click aparte de la info sale 2 botones
 
-      //Cierra el alert
+      // Cierra el alert
       buttons: [
         {
           text: 'Cerrar',

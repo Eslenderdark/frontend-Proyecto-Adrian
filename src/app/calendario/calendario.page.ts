@@ -65,17 +65,17 @@ export class CalendarioPage implements OnInit {
 
     // Recuperar citas y recuperarla
     this.http.get('http://localhost:3000/citas').subscribe((response: any) => {
-        console.log('Respuesta del backend:', response);
-        response.forEach((cita: any) =>{
-          this.citas[cita.row_index][cita.col_index] = cita.nombre + " " + cita.name;
-        })
-      
-      },
+      console.log('Respuesta del backend:', response);
+      response.forEach((cita: any) => {
+        this.citas[cita.row_index][cita.col_index] = cita.nombre + " " + cita.name;
+      })
+
+    },
       (error) => {
         console.error('Error al enviar datos al backend:', error);
       }
     );
-
+    // La alerta para elejir un nombre para la cita, solo se mostrara si el usuario ha elegido un corte de pelo, si no lo selecciona, al ir a la pagina calendario no se mostrara la alerta para seleccionar un dia en la tabla 
     this.corte = JSON.parse(this.activatedRoute.snapshot.paramMap.get('corte_seleccionado') as string);
     console.log(this.corte)
     if (this.corte != null) {
@@ -107,6 +107,7 @@ export class CalendarioPage implements OnInit {
     await alert.present();
   }
 
+  // Al darle click en una celda se pone por pantalla el nombre del user + el corte de pelo, y se manda la "const cita" al backend
   clickCeldaCalendario(hora: string, dia: string, i: number, j: number) {
     if (!this.seleccionRealizada) {
       console.log("Hora " + hora);
@@ -139,8 +140,5 @@ export class CalendarioPage implements OnInit {
     } else {
       alert('Ya has elegido un día. No se permiten selecciones adicionales.');
     }
-
-  
   }
-
 }
