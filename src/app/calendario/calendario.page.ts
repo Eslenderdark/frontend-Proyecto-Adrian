@@ -109,40 +109,45 @@ export class CalendarioPage implements OnInit {
   // Al darle click en una celda se pone por pantalla el nombre del user + el corte de pelo, y se manda la "const cita" al backend
   clickCeldaCalendario(hora: string, dia: string, i: number, j: number) {
     if (!this.seleccionRealizada) {
-      const confirmacion = window.confirm(`¿Está seguro de que desea programar una cita para el día ${dia} a la hora ${hora}?`);
-      if (confirmacion) {
-      console.log("Hora " + hora);
-      console.log("dia " + dia);
-      console.log("corte " + JSON.stringify(this.corte));
-
-      console.log(`Celda seleccionada: ${dia}, ${hora}`);
-      const cita = {
-        hora: hora,
-        dia: dia,
-        precio: this.corte.precio,
-        id_corte: this.corte.id,
-        id_cliente: this.user.email,
-        col_index: j,
-        row_index: i,
-        nombre: this.nombre_usuario
-      };
-      this.citas[i][j] = this.nombre_usuario + " " + this.corte.name
-
-      this.http.post('http://localhost:3000/citas', cita).subscribe(
-        (response) => {
-          console.log('Respuesta del backend:', response);
-          this.seleccionRealizada = true;
-        },
-        (error) => {
-          console.error('Error al enviar datos al backend:', error);
+      if (this.citas[i][j]) {
+        // La celda ya está ocupada, muestra una alerta
+        alert('Este día ya no está disponible.');
+      } else {
+        const confirmacion = window.confirm(`¿Está seguro de que desea programar una cita para el día ${dia} a la hora ${hora}?`);
+  
+        if (confirmacion) {
+          console.log("Hora " + hora);
+          console.log("Día " + dia);
+          console.log("Corte " + JSON.stringify(this.corte));
+  
+          console.log(`Celda seleccionada: ${dia}, ${hora}`);
+          const cita = {
+            hora: hora,
+            dia: dia,
+            precio: this.corte.precio,
+            id_corte: this.corte.id,
+            id_cliente: this.user.email,
+            col_index: j,
+            row_index: i,
+            nombre: this.nombre_usuario
+          };
+          this.citas[i][j] = this.nombre_usuario + " " + this.corte.name;
+  
+          this.http.post('http://localhost:3000/citas', cita).subscribe(
+            (response) => {
+              console.log('Respuesta del backend:', response);
+              this.seleccionRealizada = true;
+            },
+            (error) => {
+              console.error('Error al enviar datos al backend:', error);
+            }
+          );
+        } else {
+          console.log('Cita no confirmada. No se guardará.');
         }
-      );
-    } else {
-      alert('Cita no confirmada. No se guardará.');
-    }
+      }
     } else {
       alert('Ya has elegido un día. No se permiten selecciones adicionales.');
-
     }
   }
 }
