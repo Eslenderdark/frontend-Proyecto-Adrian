@@ -1,35 +1,57 @@
+// Variables para colores vivos
+$color-dias-libres: #aaffaa;  // Verde claro para días libres
+$color-dias-elegidos: #ffcccc;  // Rosa claro para días ya elegidos
+// Variables para colores pasteles
+$color-primario: #7aa394;  // Verde menta más oscuro
+$color-secundario: #99d2ca;  // Verde menta
+$color-texto: #444;  // Gris oscuro para el texto
 
-.CelcaCalendario {
-    border: 1px solid black;  /* Añade un borde negro a las celdas del calendario */
-    height: 50px;  /* Altura deseada para cada celda */
-  }
-  
-  .CeldaHoras {
-    border: 1px solid black;  /* Añade un borde negro a las celdas de días y horas */
-    height: 50px;  /* Altura deseada para las celdas de días y horas */
-  }
-  
-  .CeldaDias {
+.CeldaHoras,
+.CeldaCalendario {
+  border: 1px solid black;  /* Añade un borde negro a las celdas de días y horas */
+  height: 50px;  /* Altura deseada para cada celda */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    border: 1px solid black;  /* Añade un borde negro a las celdas de días y horas */
-  }
+.CeldaVacia {
+  border: none;
+  height: 50px;
+}
 
-  /* Añadimos margen para centrar los días con las celdas (sin tener en cuenta la primera celda de horas) */
-  .CeldaDias ion-col:not(.CeldaVacia) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .CeldaVacia {
-    border: none;
-    height: 50px;
-  }
-  
-  .CeldaCalendario {
+.CeldaCalendario.celda-ocupada {
+  background-color: $color-dias-elegidos;
+  color: $color-texto;
+}
 
-    border: 1px solid black;  /* Añade un borde negro a las celdas de días y horas */
+.CeldaCalendario.celda-libre {
+  background-color: $color-dias-libres;
+  color: $color-texto;
+}
 
-  }
+/* Estilos específicos para la celda en la esquina superior izquierda */
+.CeldaCalendario.celda-00 {
+  background-color: $color-secundario; /* Fondo en el color secundario (verde menta) */
+  color: $color-texto; /* Color de texto oscuro */
+  font-weight: bold; /* Texto en negrita */
+}
 
-  
+/* Estilos para la barra de días de la semana */
+.CeldaDias {
+  background-color: $color-primario; /* Color de fondo para la barra de días de la semana */
+  color: white; /* Color del texto en la barra de días de la semana */
+  font-weight: bold; /* Texto en negrita */
+}
+
+.CeldaDias {
+
+  border: 1px solid black;  /* Añade un borde negro a las celdas de días y horas */
+}
+
+/* Añadimos margen para centrar los días con las celdas (sin tener en cuenta la primera celda de horas) */
+.CeldaDias ion-col:not(.CeldaVacia) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

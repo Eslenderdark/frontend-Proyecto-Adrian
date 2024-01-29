@@ -1,11 +1,32 @@
+/* Variables para colores pasteles */
+$color-primario: #7aa394;  // Verde menta más oscuro
+$color-secundario: #99d2ca;  // Verde menta
+$color-terciario: #d1e1db;  // Verde menta más claro
+$color-texto: #444;  // Gris oscuro para el texto
+
 ion-card {
-    margin-left: 30%;
-    margin-right: 30%;
-    width: 45%;
-    height: 100%;
+  margin: auto; /* Centra la tarjeta en el contenedor */
+  width: 80%; /* Reducción del ancho de la tarjeta */
+  max-width: 300px; /* Ancho máximo para mantener la legibilidad */
+  height: auto;
+  background-color: $color-secundario; /* Fondo en el color secundario (verde menta) */
+  border-radius: 15px; /* Bordes redondeados */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sutil sombra */
+}
+
+ion-card img {
+  width: 100%;
+  border-top-left-radius: 15px; /* Redondear la esquina superior izquierda de la imagen */
+  border-top-right-radius: 15px; /* Redondear la esquina superior derecha de la imagen */
 }
 
 ion-card-title {
+  text-align: center;
+  color: $color-texto; /* Color del texto en las tarjetas */
+  font-weight: bold;
+}
 
-    text-align:center
+/* Estilo de las tarjetas cuando se seleccionan */
+ion-card.selected {
+  background-color: $color-terciario; /* Fondo en el color terciario (verde menta más claro) */
 }

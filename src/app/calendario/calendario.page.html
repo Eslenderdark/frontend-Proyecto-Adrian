@@ -4,22 +4,22 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="calendario-content">
   <ion-grid>
     <!-- Días de la semana -->
     <ion-row class="CeldaDias">
-      <!-- Celda vacia -->
+      <!-- Celda vacía -->
       <ion-col class="CeldaVacia"></ion-col>
       <ion-col *ngFor="let dias of DiaSemana" class="CentrarContenido" text-center>{{ dias }}</ion-col>
     </ion-row>
 
     <!-- Horas y celdas -->
-    <ion-row *ngFor="let hora of Horas; let j = index">
+    <ion-row *ngFor="let hora of Horas; let j = index" class="hora-row">
       <!-- Columna de horas -->
       <ion-col class="CeldaHoras" text-center>{{ hora }}</ion-col>
 
       <!-- Celdas del calendario -->
-      <ion-col *ngFor="let dia of DiaSemana; let i = index" (click)="clickCeldaCalendario(hora, dia, i, j)" class="CeldaCalendario">
+      <ion-col *ngFor="let dia of DiaSemana; let i = index" (click)="clickCeldaCalendario(hora, dia, i, j)" class="CeldaCalendario celda{{i}}{{j}}">
         {{ citas[i][j] }}
       </ion-col>
     </ion-row>
