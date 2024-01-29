@@ -25,7 +25,6 @@ export class CalendarioPage implements OnInit {
   public user: any;
   public dia: any;
   public precio: any;
-  public botonActivo: boolean = false;
   public seleccionRealizada: boolean = false;
 
   //Esto es el calendario, Dias y Horas
@@ -110,6 +109,8 @@ export class CalendarioPage implements OnInit {
   // Al darle click en una celda se pone por pantalla el nombre del user + el corte de pelo, y se manda la "const cita" al backend
   clickCeldaCalendario(hora: string, dia: string, i: number, j: number) {
     if (!this.seleccionRealizada) {
+      const confirmacion = window.confirm(`¿Está seguro de que desea programar una cita para el día ${dia} a la hora ${hora}?`);
+      if (confirmacion) {
       console.log("Hora " + hora);
       console.log("dia " + dia);
       console.log("corte " + JSON.stringify(this.corte));
@@ -130,7 +131,6 @@ export class CalendarioPage implements OnInit {
       this.http.post('http://localhost:3000/citas', cita).subscribe(
         (response) => {
           console.log('Respuesta del backend:', response);
-          this.botonActivo = true;
           this.seleccionRealizada = true;
         },
         (error) => {
@@ -138,7 +138,11 @@ export class CalendarioPage implements OnInit {
         }
       );
     } else {
+      alert('Cita no confirmada. No se guardará.');
+    }
+    } else {
       alert('Ya has elegido un día. No se permiten selecciones adicionales.');
+
     }
   }
 }
