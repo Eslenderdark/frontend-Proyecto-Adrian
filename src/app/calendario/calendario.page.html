@@ -20,7 +20,7 @@
 
       <!-- Celdas del calendario -->
       <ion-col *ngFor="let dia of DiaSemana; let i = index" (click)="clickCeldaCalendario(hora, dia, i, j)" class="CeldaCalendario celda{{i}}{{j}}">
-        {{ citas[i][j] }}
+        {{ citas[i][j] }} <ion-button  *ngIf="citas[i][j] && datos_user?.user?.admin === true"  (click)="borrar_cita()"> X </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

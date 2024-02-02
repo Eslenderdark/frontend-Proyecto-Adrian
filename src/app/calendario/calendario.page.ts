@@ -26,6 +26,9 @@ export class CalendarioPage implements OnInit {
   public dia: any;
   public precio: any;
   public seleccionRealizada: boolean = false;
+  public mostrarBoton: boolean = false;
+  public datos_user: any
+  public id_cliente: any
 
   //Esto es el calendario, Dias y Horas
   public Mes: Date = new Date();
@@ -55,11 +58,27 @@ export class CalendarioPage implements OnInit {
   ]
 
   ngOnInit() {
-
-    // Carga la informacion de usuario desde un auth
+    // Carga la información de usuario desde un auth
     this.auth.user$.subscribe((data) => {
       this.user = data
-      console.log(this.user);
+      console.log('Usuario:', this.user);
+
+      this.http.get('http://localhost:3000/cliente/' + this.user.email).subscribe((response: any) => {
+        console.log('Datos del usuario:', response);
+        this.datos_user = response;
+
+        if (this.datos_user.user.admin === true) {
+          console.log('Admin:', this.datos_user.user.admin);
+
+          if (this.datos_user.user.admin === true) {
+            this.mostrarBoton = true;
+            console.log('Mostrar botón:', this.mostrarBoton);
+          } else {
+            this.mostrarBoton = false;
+            console.log('Mostrar botón:', this.mostrarBoton);
+          }
+        }
+      });
     });
 
     // Recuperar citas y recuperarla
@@ -67,8 +86,7 @@ export class CalendarioPage implements OnInit {
       console.log('Respuesta del backend:', response);
       response.forEach((cita: any) => {
         this.citas[cita.row_index][cita.col_index] = cita.nombre + " " + cita.name;
-      })
-
+      });
     },
       (error) => {
         console.error('Error al enviar datos al backend:', error);
@@ -80,7 +98,7 @@ export class CalendarioPage implements OnInit {
     if (this.corte != null) {
       this.mostrarAlerta('Ponga su nombre y seleccione un dia');
     }
-
+    console.log('Datos del usuario:', this.datos_user);
   }
 
   //Esto sirve para que cuando el usuario haga click en alguna casilla, en la consola diga el dia y la hora de donde a clicado
@@ -107,19 +125,19 @@ export class CalendarioPage implements OnInit {
   }
 
   // Al darle click en una celda se pone por pantalla el nombre del user + el corte de pelo, y se manda la "const cita" al backend
-  clickCeldaCalendario(hora: string, dia: string, i: number, j: number) {
+  async clickCeldaCalendario(hora: string, dia: string, i: number, j: number) {
     if (!this.seleccionRealizada) {
       if (this.citas[i][j]) {
         // La celda ya está ocupada, muestra una alerta
         alert('Este día ya no está disponible.');
       } else {
         const confirmacion = window.confirm(`¿Está seguro de que desea programar una cita para el día ${dia} a la hora ${hora}?`);
-  
+
         if (confirmacion) {
           console.log("Hora " + hora);
           console.log("Día " + dia);
           console.log("Corte " + JSON.stringify(this.corte));
-  
+
           console.log(`Celda seleccionada: ${dia}, ${hora}`);
           const cita = {
             hora: hora,
@@ -132,7 +150,7 @@ export class CalendarioPage implements OnInit {
             nombre: this.nombre_usuario
           };
           this.citas[i][j] = this.nombre_usuario + " " + this.corte.name;
-  
+
           this.http.post('http://localhost:3000/citas', cita).subscribe(
             (response) => {
               console.log('Respuesta del backend:', response);
@@ -149,5 +167,14 @@ export class CalendarioPage implements OnInit {
     } else {
       alert('Ya has elegido un día. No se permiten selecciones adicionales.');
     }
+  }
+
+  async borrar_cita() {
+
+    this.http.get('http://localhost:3000/citas/' + this.user.email).subscribe((response: any) => {
+      console.log('Respuesta del backend eliminar', response);
+
+    }
+    )
   }
 }

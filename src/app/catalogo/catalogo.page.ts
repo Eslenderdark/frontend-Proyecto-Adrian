@@ -15,6 +15,7 @@ export class CatalogoPage implements OnInit {
 
   public cortes: any;
   public user: any;
+  public datos_user: any;
 
   ngOnInit() {
 
@@ -22,6 +23,10 @@ export class CatalogoPage implements OnInit {
     this.auth.user$.subscribe((data) => {
       this.user = data
       console.log(this.user);
+      this.http.get('http://localhost:3000/cliente/' + this.user.email).subscribe((response: any) => {
+        console.log(response);
+        this.datos_user = response;
+      });
     });
 
     this.http.get('http://localhost:3000/cortes').subscribe((response: any) => {
