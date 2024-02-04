@@ -23,7 +23,6 @@ export class CalendarioPage implements OnInit {
   public corte: any;
   public celda: any;
   public user: any;
-  public dia: any;
   public precio: any;
   public seleccionRealizada: boolean = false;
   public mostrarBoton: boolean = false;
@@ -169,12 +168,14 @@ export class CalendarioPage implements OnInit {
     }
   }
 
-  async borrar_cita() {
-
-    this.http.get('http://localhost:3000/citas/' + this.user.email).subscribe((response: any) => {
+  async borrar_cita(hora:any, dia: any) {
+    console.log("dia")
+    console.log(dia)
+    console.log("hora")
+    console.log(hora)
+       this.http.get('http://localhost:3000/citas/' + dia + '/' + hora).subscribe((response: any) => {
       console.log('Respuesta del backend eliminar', response);
 
-    }
-    )
+    })
   }
 }
