@@ -175,6 +175,7 @@ export class CalendarioPage implements OnInit {
     console.log(hora)
        this.http.get('http://localhost:3000/citas/' + dia + '/' + hora).subscribe((response: any) => {
       console.log('Respuesta del backend eliminar', response);
+      window.location.reload();
 
     })
   }
