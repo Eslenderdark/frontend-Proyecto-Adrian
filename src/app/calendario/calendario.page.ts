@@ -57,9 +57,8 @@ export class CalendarioPage implements OnInit {
   ]
 
   ngOnInit() {
-    // Carga la información de usuario desde un auth
     this.auth.user$.subscribe((data) => {
-      this.user = data
+      this.user = data;
       console.log('Usuario:', this.user);
 
       this.http.get('http://localhost:3000/cliente/' + this.user.email).subscribe((response: any) => {
@@ -72,11 +71,15 @@ export class CalendarioPage implements OnInit {
           if (this.datos_user.user.admin === true) {
             this.mostrarBoton = true;
             console.log('Mostrar botón:', this.mostrarBoton);
-          } else {
-            this.mostrarBoton = false;
-            console.log('Mostrar botón:', this.mostrarBoton);
           }
         }
+      });
+    });
+
+    this.http.get('http://localhost:3000/citas').subscribe((response: any) => {
+      console.log('Respuesta del backend:', response);
+      response.forEach((cita: any) => {
+        this.citas[cita.row_index][cita.col_index] = cita.nombre + " " + cita.name;
       });
     });
 
@@ -128,52 +131,105 @@ export class CalendarioPage implements OnInit {
     if (!this.seleccionRealizada) {
       if (this.citas[i][j]) {
         // La celda ya está ocupada, muestra una alerta
-        alert('Este día ya no está disponible.');
+        this.mostrarAlerta2('Este día ya está seleccionado. Elija otro día.');
+
       } else {
-        const confirmacion = window.confirm(`¿Está seguro de que desea programar una cita para el día ${dia} a la hora ${hora}?`);
+        this.mostrarAlertaConfirmacion(
+          `¿Está seguro de que desea programar una cita para el día ${dia} a la hora ${hora}?`,
+          () => {
+            console.log("Hora " + hora);
+            console.log("Día " + dia);
+            console.log("Corte " + JSON.stringify(this.corte));
 
-        if (confirmacion) {
-          console.log("Hora " + hora);
-          console.log("Día " + dia);
-          console.log("Corte " + JSON.stringify(this.corte));
+            console.log(`Celda seleccionada: ${dia}, ${hora}`);
+            const cita = {
+              hora: hora,
+              dia: dia,
+              precio: this.corte.precio,
+              id_corte: this.corte.id,
+              id_cliente: this.user.email,
+              col_index: j,
+              row_index: i,
+              nombre: this.nombre_usuario
+            };
+            this.citas[i][j] = this.nombre_usuario + " " + this.corte.name;
 
-          console.log(`Celda seleccionada: ${dia}, ${hora}`);
-          const cita = {
-            hora: hora,
-            dia: dia,
-            precio: this.corte.precio,
-            id_corte: this.corte.id,
-            id_cliente: this.user.email,
-            col_index: j,
-            row_index: i,
-            nombre: this.nombre_usuario
-          };
-          this.citas[i][j] = this.nombre_usuario + " " + this.corte.name;
-
-          this.http.post('http://localhost:3000/citas', cita).subscribe(
-            (response) => {
-              console.log('Respuesta del backend:', response);
-              this.seleccionRealizada = true;
-            },
-            (error) => {
-              console.error('Error al enviar datos al backend:', error);
-            }
-          );
-        } else {
-          console.log('Cita no confirmada. No se guardará.');
-        }
+            this.http.post('http://localhost:3000/citas', cita).subscribe(
+              (response) => {
+                console.log('Respuesta del backend:', response);
+                this.seleccionRealizada = true;
+              },
+              (error) => {
+                console.error('Error al enviar datos al backend:', error);
+              }
+            );
+          },
+          () => {
+            console.log('Cita no confirmada. No se guardará.');
+          }
+        );
       }
     } else {
-      alert('Ya has elegido un día. No se permiten selecciones adicionales.');
+      this.mostrarAlerta2('Ya has elegido un día. No se permiten selecciones adicionales.');
     }
   }
 
-  async borrar_cita(hora:any, dia: any) {
+  async mostrarAlerta2(mensaje: string, callback?: Function) {
+    const alert = await this.alertController.create({
+      header: 'Advertencia',
+      message: mensaje,
+      buttons: [
+        {
+          text: 'Entendido',
+          handler: () => {
+            console.log('Botón Entendido presionado');
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async mostrarAlertaConfirmacion(mensaje: string, confirmCallback: Function, cancelCallback?: Function) {
+    const alert = await this.alertController.create({
+      header: 'Confirmación',
+      message: mensaje,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Acción cancelada');
+            if (cancelCallback) {
+              cancelCallback();
+            }
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            console.log('Acción aceptada');
+            confirmCallback();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+
+
+  async borrar_cita(hora: any, dia: any) {
     console.log("dia")
     console.log(dia)
     console.log("hora")
     console.log(hora)
-       this.http.get('http://localhost:3000/citas/' + dia + '/' + hora).subscribe((response: any) => {
+    this.http.get('http://localhost:3000/citas/' + dia + '/' + hora).subscribe((response: any) => {
       console.log('Respuesta del backend eliminar', response);
       window.location.reload();
 
