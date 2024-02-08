@@ -16,6 +16,12 @@ export class CatalogoPage implements OnInit {
   public cortes: any;
   public user: any;
   public datos_user: any;
+  public nuevoPeinado = {
+    tipo_de_pelo: '',
+    tiempo_estimado: '',
+    precio: '',
+    url: ''
+  };
 
   ngOnInit() {
 
@@ -67,4 +73,72 @@ export class CatalogoPage implements OnInit {
     });
     await alert.present();
   }
+
+  async addPeinado() {
+    console.log("aaaaaaa");
+  
+    const alert = await this.alertController.create({
+      header: `Rellene el formulario`,
+      inputs: [
+        {
+          type: 'text',
+          placeholder: 'Tipo de pelo',
+          name: 'tipo_de_pelo'
+        },
+        {
+          type: 'number',
+          placeholder: 'Tiempo estimado',
+          name: 'tiempo_estimado'
+        },
+        {
+          type: 'number',
+          placeholder: 'Precio',
+          name: 'precio'
+        },
+        {
+          type: 'text',
+          placeholder: 'Url',
+          name: 'url'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancelando');
+          }
+        },
+        {
+          text: 'Guardar',
+          handler: (formData) => {
+            this.guardarNuevoPeinado(formData);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  guardarNuevoPeinado(PeinadoNew: any) {
+    // Guarda los datos del nuevo peinado en la variable
+    this.nuevoPeinado.tipo_de_pelo = PeinadoNew.tipo_de_pelo;
+    this.nuevoPeinado.tiempo_estimado = PeinadoNew.tiempo_estimado;
+    this.nuevoPeinado.precio = PeinadoNew.precio;
+    this.nuevoPeinado.url = PeinadoNew.url;
+
+    // Envía los datos del nuevo peinado al backend para su almacenamiento
+    this.http.post('http://localhost:3000/nuevo-peinado', this.nuevoPeinado).subscribe(
+      (response) => {
+        console.log('Nuevo peinado guardado:', response);
+        // Puedes realizar alguna acción adicional aquí si lo necesitas
+      },
+      (error) => {
+        console.error('Error al guardar nuevo peinado:', error);
+      }
+    );
+  }
+}
+
+
 }

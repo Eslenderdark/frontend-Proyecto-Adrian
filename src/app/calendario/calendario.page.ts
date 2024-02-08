@@ -101,7 +101,7 @@ export class CalendarioPage implements OnInit {
       this.mostrarAlerta('Ponga su nombre y seleccione un dia');
     }
     console.log('Datos del usuario:', this.datos_user);
-  }
+  } 
 
   //Esto sirve para que cuando el usuario haga click en alguna casilla, en la consola diga el dia y la hora de donde a clicado
   seleccionarDia(hour: string, day: string) {
@@ -223,7 +223,6 @@ export class CalendarioPage implements OnInit {
   }
 
 
-
   async borrar_cita(hora: any, dia: any) {
     console.log("dia")
     console.log(dia)
@@ -232,7 +231,6 @@ export class CalendarioPage implements OnInit {
     this.http.get('http://localhost:3000/citas/' + dia + '/' + hora).subscribe((response: any) => {
       console.log('Respuesta del backend eliminar', response);
       window.location.reload();
-
-    })
+    });
   }
 }

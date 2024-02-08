@@ -10,7 +10,8 @@ export class AppComponent {
   public appPages = [
     { title: 'Catalogo', url: 'catalogo', icon: 'person', login_hide:true },
     { title: 'Calendario', url: 'calendario', icon: 'person', login_hide:true },
-    { title: 'Información', url: 'info', icon: 'person', login_hide:true }
+    { title: 'Información', url: 'info', icon: 'person', login_hide:true },
+    { title: 'Login', url: 'login', icon: 'person', login_hide:true }
   ];
 
   constructor(public auth: AuthService) {}

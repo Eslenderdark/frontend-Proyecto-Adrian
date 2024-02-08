@@ -1,11 +1,22 @@
+<!-- login.page.html -->
+
 <ion-content [fullscreen]="true">
-  <ion-button (click)="login()" *ngIf="(auth.isAuthenticated$ | async) === false"> Login </ion-button>
-  <ion-button (click)="logout()" *ngIf="(auth.isAuthenticated$ | async) === true"> Log out </ion-button>
+  <div class="center-content">
+    <div class="container">
+      <div class="message" *ngIf="(auth.isAuthenticated$ | async) === false">Quieres iniciar sesión?</div>
+      <div class="message" *ngIf="(auth.isAuthenticated$ | async) === true">Quieres cerrar sesión?</div>
+      
+      <button class="cssbuttons-io" (click)="login()" *ngIf="(auth.isAuthenticated$ | async) === false">
+        <span> Login </span>
+      </button>
+      
+      <button class="cssbuttons-io" (click)="logout()" *ngIf="(auth.isAuthenticated$ | async) === true">
+        <span> Log Out </span>
+      </button>
 
-  <ul *ngIf="auth.user$ | async as user">
-    <li>{{ user.name }}</li>
-    <li>{{ user.email }}</li>
-  </ul>
-
-
+      <div *ngIf="(auth.isAuthenticated$ | async) === true">
+        <p class="user-email">Su sesión está con el correo: {{ (auth.user$ | async)?.email }}</p>
+      </div>
+    </div>
+  </div>
 </ion-content>
