@@ -5,7 +5,7 @@
     <ion-row>
       <ion-col size='6' *ngFor="let corte of cortes;let i = index">
         <ion-card (click)="mostrarInfo(corte)">
-          <img src='/assets/icon/{{corte.foto}}' />
+          <img src='{{corte.foto}}' />
 
 
     <!-- Tarjetas -->
@@ -15,6 +15,7 @@
               {{corte.name}} <br> {{corte.precio}}€
             </ion-card-title>
           </ion-card>
+          <ion-button *ngIf="datos_user?.user?.admin === true" (click)="borrar_corte(corte.name)"> X </ion-button>
         </ion-card>
       </ion-col>
     </ion-row>

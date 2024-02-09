@@ -17,6 +17,7 @@ export class CatalogoPage implements OnInit {
   public user: any;
   public datos_user: any;
   public nuevoPeinado = {
+    name:'',
     tipo_de_pelo: '',
     tiempo_estimado: '',
     precio: '',
@@ -75,11 +76,16 @@ export class CatalogoPage implements OnInit {
   }
 
   async addPeinado() {
-    console.log("aaaaaaa");
+    console.log("Funcioa addPeinado ejecutado");
   
     const alert = await this.alertController.create({
       header: `Rellene el formulario`,
       inputs: [
+        {
+          type: 'text',
+          placeholder: 'Name',
+          name: 'name'
+        },
         {
           type: 'text',
           placeholder: 'Tipo de pelo',
@@ -96,7 +102,7 @@ export class CatalogoPage implements OnInit {
           name: 'precio'
         },
         {
-          type: 'text',
+          type: 'url',
           placeholder: 'Url',
           name: 'url'
         },
@@ -122,23 +128,41 @@ export class CatalogoPage implements OnInit {
 
   guardarNuevoPeinado(PeinadoNew: any) {
     // Guarda los datos del nuevo peinado en la variable
+    this.nuevoPeinado.name = PeinadoNew.name;
     this.nuevoPeinado.tipo_de_pelo = PeinadoNew.tipo_de_pelo;
     this.nuevoPeinado.tiempo_estimado = PeinadoNew.tiempo_estimado;
     this.nuevoPeinado.precio = PeinadoNew.precio;
     this.nuevoPeinado.url = PeinadoNew.url;
-
+  
     // Envía los datos del nuevo peinado al backend para su almacenamiento
-    this.http.post('http://localhost:3000/nuevo-peinado', this.nuevoPeinado).subscribe(
+    this.http.post('http://localhost:3000/cortes', this.nuevoPeinado).subscribe(
       (response) => {
         console.log('Nuevo peinado guardado:', response);
-        // Puedes realizar alguna acción adicional aquí si lo necesitas
       },
       (error) => {
         console.error('Error al guardar nuevo peinado:', error);
       }
     );
+    window.location.reload();
+
   }
-}
+  
+  async borrar_corte(name: any) {
+    console.log("Corte")
+    console.log(name)
+    this.http.delete('http://localhost:3000/cortes/' + name).subscribe(
+      (response: any) => {
+        console.log('Respuesta del backend eliminar', response);
+        window.location.reload();
+      },
+      (error: any) => {
+        console.error('Error al eliminar corte:', error);
+      }
+    );
+    window.location.reload();
+
+  }
+  
 
 
-}
+  }
