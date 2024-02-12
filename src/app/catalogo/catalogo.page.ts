@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from '@auth0/auth0-angular';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+
 
 @Component({
   selector: 'app-catalogo',
@@ -12,7 +14,6 @@ import { Router } from '@angular/router';
 export class CatalogoPage implements OnInit {
 
   constructor(public auth: AuthService, private http: HttpClient, private alertController: AlertController, private router: Router) { }
-
   public cortes: any;
   public user: any;
   public datos_user: any;
@@ -30,13 +31,13 @@ export class CatalogoPage implements OnInit {
     this.auth.user$.subscribe((data) => {
       this.user = data
       console.log(this.user);
-      this.http.get('http://localhost:3000/cliente/' + this.user.email).subscribe((response: any) => {
+      this.http.get(environment.backend_host + '/cliente/' + this.user.email).subscribe((response: any) => {
         console.log(response);
         this.datos_user = response;
       });
     });
 
-    this.http.get('http://localhost:3000/cortes').subscribe((response: any) => {
+    this.http.get(environment.backend_host + '/cortes').subscribe((response: any) => {
       console.log(response);
       this.cortes = response;
     });
@@ -135,7 +136,7 @@ export class CatalogoPage implements OnInit {
     this.nuevoPeinado.url = PeinadoNew.url;
   
     // Envía los datos del nuevo peinado al backend para su almacenamiento
-    this.http.post('http://localhost:3000/cortes', this.nuevoPeinado).subscribe(
+    this.http.post(environment.backend_host + '/cortes', this.nuevoPeinado).subscribe(
       (response) => {
         console.log('Nuevo peinado guardado:', response);
       },
@@ -150,7 +151,7 @@ export class CatalogoPage implements OnInit {
   async borrar_corte(name: any) {
     console.log("Corte")
     console.log(name)
-    this.http.delete('http://localhost:3000/cortes/' + name).subscribe(
+    this.http.delete(environment.backend_host + 'cortes/' + name).subscribe(
       (response: any) => {
         console.log('Respuesta del backend eliminar', response);
         window.location.reload();

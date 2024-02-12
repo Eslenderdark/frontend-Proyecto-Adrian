@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from '@auth0/auth0-angular';
 import { HttpClient } from '@angular/common/http';
-
+import { environment } from '../../environments/environment';
 
 
 @Component({
@@ -61,7 +61,7 @@ export class CalendarioPage implements OnInit {
       this.user = data;
       console.log('Usuario:', this.user);
 
-      this.http.get('http://localhost:3000/cliente/' + this.user.email).subscribe((response: any) => {
+      this.http.get(environment.backend_host + '/cliente/' + this.user.email).subscribe((response: any) => {
         console.log('Datos del usuario:', response);
         this.datos_user = response;
 
@@ -76,7 +76,7 @@ export class CalendarioPage implements OnInit {
       });
     });
 
-    this.http.get('http://localhost:3000/citas').subscribe((response: any) => {
+    this.http.get(environment.backend_host + '/citas').subscribe((response: any) => {
       console.log('Respuesta del backend:', response);
       response.forEach((cita: any) => {
         this.citas[cita.row_index][cita.col_index] = cita.nombre + " " + cita.name;
@@ -84,7 +84,7 @@ export class CalendarioPage implements OnInit {
     });
 
     // Recuperar citas y recuperarla
-    this.http.get('http://localhost:3000/citas').subscribe((response: any) => {
+    this.http.get(environment.backend_host + '/citas').subscribe((response: any) => {
       console.log('Respuesta del backend:', response);
       response.forEach((cita: any) => {
         this.citas[cita.row_index][cita.col_index] = cita.nombre + " " + cita.name;
@@ -94,6 +94,7 @@ export class CalendarioPage implements OnInit {
         console.error('Error al enviar datos al backend:', error);
       }
     );
+
     // La alerta para elejir un nombre para la cita, solo se mostrara si el usuario ha elegido un corte de pelo, si no lo selecciona, al ir a la pagina calendario no se mostrara la alerta para seleccionar un dia en la tabla 
     this.corte = JSON.parse(this.activatedRoute.snapshot.paramMap.get('corte_seleccionado') as string);
     console.log(this.corte)
@@ -101,6 +102,8 @@ export class CalendarioPage implements OnInit {
       this.mostrarAlerta('Ponga su nombre y seleccione un dia');
     }
     console.log('Datos del usuario:', this.datos_user);
+
+
   } 
 
   //Esto sirve para que cuando el usuario haga click en alguna casilla, en la consola diga el dia y la hora de donde a clicado
@@ -154,7 +157,7 @@ export class CalendarioPage implements OnInit {
             };
             this.citas[i][j] = this.nombre_usuario + " " + this.corte.name;
 
-            this.http.post('http://localhost:3000/citas', cita).subscribe(
+            this.http.post(environment.backend_host + '/citas', cita).subscribe(
               (response) => {
                 console.log('Respuesta del backend:', response);
                 this.seleccionRealizada = true;
@@ -228,7 +231,7 @@ export class CalendarioPage implements OnInit {
     console.log(dia)
     console.log("hora")
     console.log(hora)
-    this.http.get('http://localhost:3000/citas/' + dia + '/' + hora).subscribe((response: any) => {
+    this.http.get(environment.backend_host + '/citas/' + dia + '/' + hora).subscribe((response: any) => {
       console.log('Respuesta del backend eliminar', response);
       window.location.reload();
     });
