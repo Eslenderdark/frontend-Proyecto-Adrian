@@ -14,6 +14,7 @@ import { environment } from '../../environments/environment';
 export class CatalogoPage implements OnInit {
 
   constructor(public auth: AuthService, private http: HttpClient, private alertController: AlertController, private router: Router) { }
+
   public cortes: any;
   public user: any;
   public datos_user: any;
@@ -151,7 +152,7 @@ export class CatalogoPage implements OnInit {
   async borrar_corte(name: any) {
     console.log("Corte")
     console.log(name)
-    this.http.delete(environment.backend_host + 'cortes/' + name).subscribe(
+    this.http.delete(environment.backend_host + '/cortes/' + name).subscribe(
       (response: any) => {
         console.log('Respuesta del backend eliminar', response);
         window.location.reload();
