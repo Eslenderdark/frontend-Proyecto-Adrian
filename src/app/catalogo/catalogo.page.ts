@@ -152,7 +152,7 @@ export class CatalogoPage implements OnInit {
   async borrar_corte(name: any) {
     console.log("Corte")
     console.log(name)
-    this.http.delete(environment.backend_host + '/cortes/' + name).subscribe(
+    this.http.get(environment.backend_host + '/cortes/' + name).subscribe(
       (response: any) => {
         console.log('Respuesta del backend eliminar', response);
         window.location.reload();
