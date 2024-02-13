@@ -78,7 +78,7 @@ export class CatalogoPage implements OnInit {
   }
 
   async addPeinado() {
-    console.log("Funcioa addPeinado ejecutado");
+    console.log("Funcion addPeinado ejecutado");
   
     const alert = await this.alertController.create({
       header: `Rellene el formulario`,
